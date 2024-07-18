@@ -175,12 +175,12 @@ check_os
 cd $(sudo -u $USER echo $HOME)
 
 # Next let's set some important parameters.
-# We will need your required SQL root passwords
+# We will need your required SQL passwords
 echo -e "${YELLOW}Now let's set some important parameters...${NC}"
 sleep 1
-echo -e "${YELLOW}We will need your required SQL root password${NC}"
+echo -e "${YELLOW}We will need your required SQL erpnext password${NC}"
 sleep 1
-sqlpasswrd=$(ask_twice "What is your required SQL root password" "true")
+sqlpasswrd=$(ask_twice "What is your required SQL erpnext password" "true")
 sleep 1
 echo -e "\n"
 
@@ -269,11 +269,11 @@ if [ ! -f "$MARKER_FILE" ]; then
     echo -e ${YELLOW}"Now we'll go ahead to apply MariaDB security settings...${NC}"
     sleep 2
 
-    sudo mysql -e "ALTER USER 'root'@'localhost' IDENTIFIED BY '$sqlpasswrd';"
-    sudo mysql -u root -p"$sqlpasswrd" -e "ALTER USER 'root'@'localhost' IDENTIFIED BY '$sqlpasswrd';"
-    sudo mysql -u root -p"$sqlpasswrd" -e "DELETE FROM mysql.user WHERE User='';"
-    sudo mysql -u root -p"$sqlpasswrd" -e "DROP DATABASE IF EXISTS test;DELETE FROM mysql.db WHERE Db='test' OR Db='test\\_%';"
-    sudo mysql -u root -p"$sqlpasswrd" -e "FLUSH PRIVILEGES;"
+    sudo mysql -e "ALTER USER 'erpnext'@'localhost' IDENTIFIED BY '$sqlpasswrd';"
+    sudo mysql -u erpnext -p"$sqlpasswrd" -e "ALTER USER 'erpnext'@'localhost' IDENTIFIED BY '$sqlpasswrd';"
+    sudo mysql -u erpnext -p"$sqlpasswrd" -e "DELETE FROM mysql.user WHERE User='';"
+    sudo mysql -u erpnext -p"$sqlpasswrd" -e "DROP DATABASE IF EXISTS test;DELETE FROM mysql.db WHERE Db='test' OR Db='test\\_%';"
+    sudo mysql -u erpnext -p"$sqlpasswrd" -e "FLUSH PRIVILEGES;"
 
     echo -e "${YELLOW}...And add some settings to /etc/mysql/my.cnf:${NC}"
     sleep 2
@@ -366,7 +366,7 @@ cd frappe-bench && \
 
 sudo chmod -R o+rx /home/$(echo $USER)
 
-bench new-site $site_name --db-root-password $sqlpasswrd --admin-password $adminpasswrd
+bench new-site $site_name --db-user erpnext --db-password $sqlpasswrd --admin-password $adminpasswrd
 
 # Prompt user to confirm if they want to install ERPNext
 
